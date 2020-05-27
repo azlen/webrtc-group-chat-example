@@ -25,6 +25,23 @@ main.get('/', function(req, res){ res.sendFile(__dirname + '/client.html'); });
 // main.get('/client.html', function(req, res){ res.sendfile('newclient.html'); });
 
 
+main.get('/status', function(req, res) {
+    // TODO: figure out casing?
+
+    channel = channels[req.query.channel]
+
+    if (channel) {
+        res.send({
+            exists: true,
+            participants: Object.keys(channel).length
+        })
+    } else {
+        res.send({
+            exists: false,
+            participants: 0
+        })
+    }
+})
 
 /*************************/
 /*** INTERESTING STUFF ***/

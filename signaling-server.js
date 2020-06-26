@@ -25,11 +25,7 @@ main.get('/', function(req, res){ res.sendFile(__dirname + '/client.html'); });
 // main.get('/index.html', function(req, res){ res.sendfile('newclient.html'); });
 // main.get('/client.html', function(req, res){ res.sendfile('newclient.html'); });
 
-const corsOptions = {
-    origin: 'https://cozyroom.xyz'
-}
-
-main.get('/status', cors(corsOptions), function(req, res) {
+main.get('/status', cors(), function(req, res) {
     // TODO: figure out casing?
 
     channel = channels[req.query.channel]

@@ -14,6 +14,7 @@ var main = express()
 var server = http.createServer(main)
 var io  = require('socket.io').listen(server);
 //io.set('log level', 2);
+const cors = require('cors');
 
 server.listen(PORT, null, function() {
     console.log("Listening on port " + PORT);
@@ -24,8 +25,11 @@ main.get('/', function(req, res){ res.sendFile(__dirname + '/client.html'); });
 // main.get('/index.html', function(req, res){ res.sendfile('newclient.html'); });
 // main.get('/client.html', function(req, res){ res.sendfile('newclient.html'); });
 
+const corsOptions = {
+    origin: 'https://cozyroom.xyz'
+}
 
-main.get('/status', function(req, res) {
+main.get('/status', cors(corsOptions), function(req, res) {
     // TODO: figure out casing?
 
     channel = channels[req.query.channel]

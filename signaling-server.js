@@ -91,7 +91,7 @@ io.sockets.on('connection', function (socket) {
             channels[channel] = {};
         }
 
-        if(channels[channel].length == 0 && (channel in roomData)) {
+        if(Object.keys(channels[channel]).length == 0 && (channel in roomData)) {
             socket.emit('receiveRoomData', roomData[channel]);
         }
 

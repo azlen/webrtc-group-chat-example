@@ -13,7 +13,7 @@ var bodyParser = require('body-parser')
 var main = express()
 var server = http.createServer(main)
 var io  = require('socket.io').listen(server);
-//io.set('log level', 2);
+
 const cors = require('cors');
 
 server.listen(PORT, null, function() {
@@ -48,6 +48,10 @@ main.get('/status', cors(), function(req, res) {
 /*************************/
 var channels = {};
 var sockets = {};
+
+var roomData = {
+
+}
 
 /**
  * Users will connect to the signaling server, after which they'll issue a "join"
@@ -85,6 +89,10 @@ io.sockets.on('connection', function (socket) {
 
         if (!(channel in channels)) {
             channels[channel] = {};
+        }
+
+        if(channels[channel].length == 0 && (channel in roomData)) {
+            socket.emit('receiveRoomData', roomData[channel]);
         }
 
         for (id in channels[channel]) {
@@ -132,5 +140,13 @@ io.sockets.on('connection', function (socket) {
         if (peer_id in sockets) {
             sockets[peer_id].emit('sessionDescription', {'peer_id': socket.id, 'session_description': session_description});
         }
+    });
+
+    socket.on('receiveRoomData', function(config) {
+        var channel = config.channel;
+
+        //console.log('receive room data', config)
+
+        roomData[channel] = config.data;
     });
 });
